@@ -1,0 +1,24 @@
+version: '3'
+
+services:
+  registry:
+    image: registry:2
+    container_name: registry
+    restart: always
+    ports:
+      - "6970:5000"  # Expose the registry on port 5000
+    environment:
+      REGISTRY_AUTH: "htpasswd"
+      REGISTRY_AUTH_HTPASSWD_PATH: /auth/htpasswd
+      REGISTRY_AUTH_HTPASSWD_REALM: "Registry Realm"
+    volumes:
+      - ./data:/var/lib/registry   # Store data outside the container
+      - ./auth:/auth                # Mount the auth directory
+    networks:
+      - registry_network
+
+networks:
+  registry_network:
+    driver: bridge
+
+
